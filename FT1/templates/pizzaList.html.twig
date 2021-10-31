@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    {#    <h1>Hello {{ controller_name }}</h1>#}
+    <li {{ app.request.get('_route') == 'main_page' ? 'active' }}>
+        <a href="{{ path('main_page') }}">Вернуться на главную</a>
+    </li>
+
+    {% for pizza in pizzas %}
+        <div>
+            <div>
+                <h3>{{ pizza.pizzaName }}</h3>
+                <div>{{ pizza.pizzaPrice }} руб.</div>
+                <div>{{ pizza.pizzaSize }} см.</div>
+                <p>{{ pizza.pizzaComposition }}</p>
+                <a href="{{ path('pizzaAdd', {'id':pizza.id}) }}">Добавить в корзину</a>
+            </div>
+        </div>
+    {% endfor %}
+
+    {#    <div class="example-wrapper">#}
+    {#        <h1>Пиццы:</h1>#}
+    {#        <ul>#}
+    {#            {% for pizza in pizzas %}#}
+    {#                <li>{{ pizza.pizzaName }}, {{ pizza.pizzaPrice }}, {{ pizza.pizzaComposition }}</li>#}
+    {#            {% endfor %}#}
+    {#        </ul>#}
+    {#    </div>#}
+{% endblock %}
