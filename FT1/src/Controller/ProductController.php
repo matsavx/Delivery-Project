@@ -135,6 +135,22 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("kits/removePizza/{id<\d+>}", name="removePizza")
+     * @param DeliveryKitRepository $kitRepository
+     * @param DeliveryKit $deliveryKit
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public  function kitRemovePizza (DeliveryKitRepository $kitRepository, DeliveryKit $deliveryKit, EntityManagerInterface $entityManager) :Response {
+        $deliveryKit = $kitRepository->findOneBy(['id'=>$deliveryKit->getId()]);
+        $deliveryPizza = $deliveryKit->getDeliveryPizzaInKit();
+        $deliveryPizza->removeDeliveryKit($deliveryKit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('kitList', ['id'=>$deliveryKit->getId()]);
+    }
+
+    /**
      * @Route("/drinks/addingDrink/{id<\d+>}", name="drinkAdd")
 
      * @param DeliveryDrink $deliveryDrink
@@ -155,6 +171,22 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("kits/removeDrink/{id<\d+>}", name="removeDrink")
+     * @param DeliveryKitRepository $kitRepository
+     * @param DeliveryKit $deliveryKit
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public  function kitRemoveDrink (DeliveryKitRepository $kitRepository, DeliveryKit $deliveryKit, EntityManagerInterface $entityManager) :Response {
+        $deliveryKit = $kitRepository->findOneBy(['id'=>$deliveryKit->getId()]);
+        $deliveryDrink = $deliveryKit->getDeliveryDrinkInKit();
+        $deliveryDrink->removeDeliveryKit($deliveryKit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('kitList', ['id'=>$deliveryKit->getId()]);
+    }
+
+    /**
      * @Route("/rolls/addingRolls/{id<\d+>}", name="rollAdd")
 
      * @param DeliveryRoll $deliveryRoll
@@ -172,6 +204,22 @@ class ProductController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('rollList', ['id'=>$deliveryRoll->getId()]);
+    }
+
+    /**
+     * @Route("kits/removeRoll/{id<\d+>}", name="removeRoll")
+     * @param DeliveryKitRepository $kitRepository
+     * @param DeliveryKit $deliveryKit
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public  function kitRemoveRoll (DeliveryKitRepository $kitRepository, DeliveryKit $deliveryKit, EntityManagerInterface $entityManager) :Response {
+        $deliveryKit = $kitRepository->findOneBy(['id'=>$deliveryKit->getId()]);
+        $deliveryRoll = $deliveryKit->getDeliveryRollInKit();
+        $deliveryRoll->removeDeliveryKit($deliveryKit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('kitList', ['id'=>$deliveryKit->getId()]);
     }
 
     /**
@@ -204,5 +252,7 @@ class ProductController extends AbstractController
             'form'=>$orderForm->createView()
         ]);
     }
+
+
 
 }
