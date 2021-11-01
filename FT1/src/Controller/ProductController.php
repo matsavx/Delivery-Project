@@ -20,8 +20,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+//$session = 1;
+
 class ProductController extends AbstractController
 {
+//    private int $session = 1;
+//    /**
+//     * ProductController constructor.
+//     * @param int $session
+//     */
+//    public function __construct(int $session)
+//    {
+//        $this->session = $session + rand(0,10);
+////        $this->session->start();
+////        $session = 1;
+//    }
+
+//    public function incSession(int $session_first)
+//    {
+//         = $session_first + 1;
+//    }
+
     #[Route('/', name: 'main_page')]
     public function index(): Response
     {
@@ -29,6 +48,7 @@ class ProductController extends AbstractController
             'controller_name' => 'ProductController',
         ]);
     }
+
     private SessionInterface $session;
 
     /**
@@ -103,6 +123,7 @@ class ProductController extends AbstractController
      */
     public function kitList(DeliveryKitRepository $kitRepository) : Response {
 
+//        global $session;
         $session = $this->session->getId();
         $kits = $kitRepository->findBy(['sessionId'=>$session]);
 
@@ -124,6 +145,7 @@ class ProductController extends AbstractController
                                 EntityManagerInterface $entityManager) : Response {
         $sessionId = $this->session->getId();
 //        $deliveryKit = (new DeliveryKit())->addDeliveryPizzaInKit($deliveryPizza);
+//        global $session;
         $deliveryKit = (new DeliveryKit())
             -> setSessionId($sessionId)
             -> setDeliveryPizzaInKit($deliveryPizza);
@@ -142,6 +164,7 @@ class ProductController extends AbstractController
      * @return Response
      */
     public  function kitRemovePizza (DeliveryKitRepository $kitRepository, DeliveryKit $deliveryKit, EntityManagerInterface $entityManager) :Response {
+
         $deliveryKit = $kitRepository->findOneBy(['id'=>$deliveryKit->getId()]);
         $deliveryPizza = $deliveryKit->getDeliveryPizzaInKit();
         $deliveryPizza->removeDeliveryKit($deliveryKit);
@@ -160,6 +183,7 @@ class ProductController extends AbstractController
     public function kitAddDrink(DeliveryDrink $deliveryDrink,
                                 EntityManagerInterface $entityManager) : Response {
         $sessionId = $this->session->getId();
+//        global $session;
         $deliveryKit = (new DeliveryKit())
             -> setSessionId($sessionId)
             -> setDeliveryDrinkInKit($deliveryDrink);
@@ -178,6 +202,7 @@ class ProductController extends AbstractController
      * @return Response
      */
     public  function kitRemoveDrink (DeliveryKitRepository $kitRepository, DeliveryKit $deliveryKit, EntityManagerInterface $entityManager) :Response {
+
         $deliveryKit = $kitRepository->findOneBy(['id'=>$deliveryKit->getId()]);
         $deliveryDrink = $deliveryKit->getDeliveryDrinkInKit();
         $deliveryDrink->removeDeliveryKit($deliveryKit);
@@ -194,8 +219,9 @@ class ProductController extends AbstractController
      * @return Response
      */
     public function kitAddRoll(DeliveryRoll $deliveryRoll,
-                                EntityManagerInterface $entityManager) : Response {
+                               EntityManagerInterface $entityManager) : Response {
         $sessionId = $this->session->getId();
+//        global $session;
         $deliveryKit = (new DeliveryKit())
             -> setSessionId($sessionId)
             -> setDeliveryRollInKit($deliveryRoll);
@@ -214,6 +240,7 @@ class ProductController extends AbstractController
      * @return Response
      */
     public  function kitRemoveRoll (DeliveryKitRepository $kitRepository, DeliveryKit $deliveryKit, EntityManagerInterface $entityManager) :Response {
+
         $deliveryKit = $kitRepository->findOneBy(['id'=>$deliveryKit->getId()]);
         $deliveryRoll = $deliveryKit->getDeliveryRollInKit();
         $deliveryRoll->removeDeliveryKit($deliveryKit);
@@ -231,6 +258,7 @@ class ProductController extends AbstractController
      */
     public function createOrder(Request $request, EntityManagerInterface $entityManager) : Response {
 
+//        global $session;
         $deliveryOrder = new DeliveryOrder();
         $orderForm = $this->createForm(DeliveryOrderFormType::class, $deliveryOrder);
         $orderForm->handleRequest($request);
@@ -243,6 +271,8 @@ class ProductController extends AbstractController
 
                 $entityManager->persist($deliveryOrder);
                 $entityManager->flush();
+//                $session++;
+//                $this->incSession($this->session);
                 $this->session->migrate();
             }
             return $this->redirectToRoute('main_page');
@@ -252,7 +282,5 @@ class ProductController extends AbstractController
             'form'=>$orderForm->createView()
         ]);
     }
-
-
 
 }
