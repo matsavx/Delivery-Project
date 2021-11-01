@@ -23,6 +23,7 @@
                     <div>{{ kit.deliveryPizzaInKit.pizzaPrice }} руб.</div>
                     <div>{{ kit.deliveryPizzaInKit.pizzaSize }} см.</div>
                     <p>{{ kit.deliveryPizzaInKit.pizzaComposition }}</p>
+                    <a href="{{ path('removePizza', {'id':kit.id}) }}">Удалить из корзины</a>
                     {% set totalPrice = totalPrice + kit.deliveryPizzaInKit.pizzaPrice %}
                 </div>
             </div>
@@ -34,10 +35,11 @@
                     <div>{{ kit.deliveryDrinkInKit.drinkPrice }} руб.</div>
                     <div>{{ kit.deliveryDrinkInKit.drinkVolume }} мл.</div>
                     <p>{{ kit.deliveryDrinkInKit.drinkComposition }}</p>
+                    <a href="{{ path('removeDrink', {'id':kit.id}) }}">Удалить из корзины</a>
                     {% set totalPrice = totalPrice + kit.deliveryDrinkInKit.drinkPrice %}
                 </div>
             </div>
-        {% else %}
+        {% elseif kit.deliveryRollInKit != false %}
             <div>
                 <div>
 {#                    <div>{{ kit.id }}</div>#}
@@ -45,6 +47,7 @@
                     <div>{{ kit.deliveryRollInKit.rollPrice }} руб.</div>
                     <div>{{ kit.deliveryRollInKit.rollQuantity }} шт.</div>
                     <p>{{ kit.deliveryRollInKit.rollComposition }}</p>
+                    <a href="{{ path('removeRoll', {'id':kit.id}) }}">Удалить из корзины</a>
                     {% set totalPrice = totalPrice + kit.deliveryRollInKit.rollPrice %}
                 </div>
             </div>
