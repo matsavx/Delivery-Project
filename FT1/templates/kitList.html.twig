@@ -56,11 +56,7 @@
                     <div>{{ kit.deliveryPizzaInKit.pizzaPrice }} руб.</div>
                     <div>{{ kit.deliveryPizzaInKit.pizzaSize }} см.</div>
                     <p>{{ kit.deliveryPizzaInKit.pizzaComposition }}</p>
-<<<<<<< HEAD
                     <a class="btn btn-danger" href="{{ path('removePizza', {'id':kit.id}) }}">Удалить из корзины</a>
-=======
-                    <a href="{{ path('removePizza', {'id':kit.id}) }}">Удалить из корзины</a>
->>>>>>> 21276cdc695205429846f3b8307ad363872d0306
                     {% set totalPrice = totalPrice + kit.deliveryPizzaInKit.pizzaPrice %}
                 </div>
             </div>
@@ -71,11 +67,7 @@
                     <div>{{ kit.deliveryDrinkInKit.drinkPrice }} руб.</div>
                     <div>{{ kit.deliveryDrinkInKit.drinkVolume }} мл.</div>
                     <p>{{ kit.deliveryDrinkInKit.drinkComposition }}</p>
-<<<<<<< HEAD
                     <a class="btn btn-danger" href="{{ path('removeDrink', {'id':kit.id}) }}">Удалить из корзины</a>
-=======
-                    <a href="{{ path('removeDrink', {'id':kit.id}) }}">Удалить из корзины</a>
->>>>>>> 21276cdc695205429846f3b8307ad363872d0306
                     {% set totalPrice = totalPrice + kit.deliveryDrinkInKit.drinkPrice %}
                 </div>
             </div>
@@ -86,11 +78,7 @@
                     <div>{{ kit.deliveryRollInKit.rollPrice }} руб.</div>
                     <div>{{ kit.deliveryRollInKit.rollQuantity }} шт.</div>
                     <p>{{ kit.deliveryRollInKit.rollComposition }}</p>
-<<<<<<< HEAD
                     <a class="btn btn-danger" href="{{ path('removeRoll', {'id':kit.id}) }}">Удалить из корзины</a>
-=======
-                    <a href="{{ path('removeRoll', {'id':kit.id}) }}">Удалить из корзины</a>
->>>>>>> 21276cdc695205429846f3b8307ad363872d0306
                     {% set totalPrice = totalPrice + kit.deliveryRollInKit.rollPrice %}
                 </div>
             </div>
