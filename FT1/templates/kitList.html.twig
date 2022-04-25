@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!{% endblock %}
+{% block title %}Корзина{% endblock %}
 
 {% block body %}
     <style>
@@ -8,52 +8,94 @@
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     </style>
 
-    {#        <h1>Hello {{ controller_name }}</h1>#}
-    <li {{ app.request.get('_route') == 'main_page' ? 'active' }}>
-        <a href="{{ path('main_page') }}">Вернуться на главную</a>
-    </li>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            </a>
+            <ul class="nav nav-pills">
+                <li {{ app.request.get('_route') == 'main_page' ? 'active' }}>
+                    <a href="{{ path('main_page') }}" class="nav-link text-dark" aria-current="page">Главная</a>
+                </li>
+                <li {{ app.request.get('_route') == 'pizzaList' ? 'active' }}>
+                    <a href="{{ path('pizzaList') }}" class="nav-link text-dark" aria-current="page">Пиццы</a>
+                </li>
+                <li {{ app.request.get('_route') == 'drinkList' ? 'active' }}>
+                    <a href="{{ path('drinkList') }}" class="nav-link text-dark" aria-current="page">Напитки</a>
+                </li>
+                <li {{ app.request.get('_route') == 'rollList' ? 'active' }}>
+                    <a href="{{ path('rollList') }}" class="nav-link text-dark" aria-current="page">Роллы</a>
+                </li>
+                <li {{ app.request.get('_route') == 'kitList' ? 'active' }}>
+                    <a href="{{ path('kitList') }}" class="nav-link active bg-dark" aria-current="page">Корзина</a>
+                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li {{ app.request.get('_route') == 'history' ? 'active' }}>
+                        <a href="{{ path('history') }}" class="nav-link text-dark" aria-current="page">Заказы</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <div class="col-md-3 text-center">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="text-primary mr-2">{{ user }}</a>
+                    <button type="button" class="btn btn-primary"><a class="text-light" href="{{ path('app_logout') }}">Выйти</a></button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-primary me-2"><a href="{{ path('app_login') }}">Войти</a></button>
+                    <button type="button" class="btn btn-primary"><a class="text-light" href="{{ path('app_register') }}">Регистрация</a></button>
+                {% endif %}
+            </div>
+        </header>
+    </div>
 
+    <div class="col-xs-12 col-md-6">
     {% set totalPrice = 0 %}
     {% for kit in kits %}
         {% if kit.deliveryPizzaInKit != false %}
             <div>
                 <div>
-{#                    <div>{{ kit.id }}</div>#}
                     <h3>{{ kit.deliveryPizzaInKit.pizzaName }}</h3>
                     <div>{{ kit.deliveryPizzaInKit.pizzaPrice }} руб.</div>
                     <div>{{ kit.deliveryPizzaInKit.pizzaSize }} см.</div>
                     <p>{{ kit.deliveryPizzaInKit.pizzaComposition }}</p>
+                    <a class="btn btn-danger" href="{{ path('removePizza', {'id':kit.id}) }}">Удалить из корзины</a>
                     {% set totalPrice = totalPrice + kit.deliveryPizzaInKit.pizzaPrice %}
                 </div>
             </div>
         {% elseif kit.deliveryDrinkInKit != false %}
             <div>
                 <div>
-{#                    <div>{{ kit.id }}</div>#}
                     <h3>{{ kit.deliveryDrinkInKit.drinkName }}</h3>
                     <div>{{ kit.deliveryDrinkInKit.drinkPrice }} руб.</div>
                     <div>{{ kit.deliveryDrinkInKit.drinkVolume }} мл.</div>
                     <p>{{ kit.deliveryDrinkInKit.drinkComposition }}</p>
+                    <a class="btn btn-danger" href="{{ path('removeDrink', {'id':kit.id}) }}">Удалить из корзины</a>
                     {% set totalPrice = totalPrice + kit.deliveryDrinkInKit.drinkPrice %}
                 </div>
             </div>
-        {% else %}
+        {% elseif kit.deliveryRollInKit != false %}
             <div>
                 <div>
-{#                    <div>{{ kit.id }}</div>#}
                     <h3>{{ kit.deliveryRollInKit.rollName }}</h3>
                     <div>{{ kit.deliveryRollInKit.rollPrice }} руб.</div>
                     <div>{{ kit.deliveryRollInKit.rollQuantity }} шт.</div>
                     <p>{{ kit.deliveryRollInKit.rollComposition }}</p>
+                    <a class="btn btn-danger" href="{{ path('removeRoll', {'id':kit.id}) }}">Удалить из корзины</a>
                     {% set totalPrice = totalPrice + kit.deliveryRollInKit.rollPrice %}
                 </div>
             </div>
         {% endif %}
 
     {% endfor %}
+    </div>
 
-    <h3>Итого: {{ totalPrice }} руб.</h3>
+    <div class="">
+        <div class="col-xs-12 col-md-6 mt-lg-1">
+            <h4>-------------------------------</h4>
+            <p class="lead">Итого: {{ totalPrice }} руб.</p>
+        </div>
 
-    <a href="{{ path('order') }}">Оформить заказ</a>
+        <div class="col-xs-12 col-md-6">
+            <a href="{{ path('order') }}" class="btn btn-success">Оформить заказ</a>
+        </div>
+    </div>
 
 {% endblock %}

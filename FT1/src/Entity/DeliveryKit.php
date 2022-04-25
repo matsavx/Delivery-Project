@@ -44,6 +44,11 @@ class DeliveryKit
      */
     private $deliveryOrders;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $kitClientId;
+
     public function __construct()
     {
         $this->deliveryOrders = new ArrayCollection();
@@ -128,6 +133,18 @@ class DeliveryKit
                 $deliveryOrder->setOrderKit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getKitClientId(): ?int
+    {
+        return $this->kitClientId;
+    }
+
+    public function setKitClientId(?int $kitClientId): self
+    {
+        $this->kitClientId = $kitClientId;
 
         return $this;
     }

@@ -1,19 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Пиццы{% endblock %}
+{% block title %}История заказов{% endblock %}
 
 {% block body %}
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-
-        .thumbnail {
-            margin-bottom: 20px;
-            padding: 0px;
-            -webkit-border-radius: 0px;
-            -moz-border-radius: 0px;
-            border-radius: 0px
-        }
     </style>
 
     <div class="container">
@@ -26,7 +18,7 @@
                     <a href="{{ path('main_page') }}" class="nav-link text-dark" aria-current="page">Главная</a>
                 </li>
                 <li {{ app.request.get('_route') == 'pizzaList' ? 'active' }}>
-                    <a href="{{ path('pizzaList') }}" class="nav-link active bg-dark" aria-current="page">Пиццы</a>
+                    <a href="{{ path('pizzaList') }}" class="nav-link text-dark" aria-current="page">Пиццы</a>
                 </li>
                 <li {{ app.request.get('_route') == 'drinkList' ? 'active' }}>
                     <a href="{{ path('drinkList') }}" class="nav-link text-dark" aria-current="page">Напитки</a>
@@ -39,7 +31,7 @@
                 </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li {{ app.request.get('_route') == 'history' ? 'active' }}>
-                        <a href="{{ path('history') }}" class="nav-link text-dark" aria-current="page">Заказы</a>
+                        <a href="{{ path('history') }}" class="nav-link active bg-dark" aria-current="page">Заказы</a>
                     </li>
                 {% endif %}
             </ul>
@@ -55,47 +47,53 @@
         </header>
     </div>
 
-
-    <div class="container">
-        <div id="products" class="row justify-content-center">
-            {% for pizza in pizzas %}
-                <div class="item col-xs-4 col-lg-4 mt-lg-2">
-                    <div class="thumbnail">
-                        <h4 class="group inner list-group-item-heading">{{ pizza.pizzaName }}</h4>
-                        <p class="group inner list-group-item-text">Размер: {{ pizza.pizzaSize }} см.</p>
-                        <p class="group inner list-group-item-text">{{ pizza.pizzaComposition }}</p>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                <p class="lead">{{ pizza.pizzaPrice }} руб.</p>
-                            </div>
-                            <div class="col-xs-12 col-md-6">
-                                <a href="{{ path('pizzaAdd', {'id':pizza.id}) }}" class="btn btn-success">Добавить в корзину</a>
-                            </div>
-                        </div>
+    <div class="container m-auto">
+    {% set totalPrice = 0 %}
+    {% set sessionstr = "" %}
+    {#    {% for order in orders %}#}
+        {% for kit in kits %}
+            {% if sessionstr != kit.sessionId %}
+                {% for order in orders %}
+                    {% if order.orderSessionId == kit.sessionId %}
+                        <h4 class="text-center">----------------------------------------Дата заказа: {{ order.orderDate|date('d.m.Y H:i') }}----------------------------------------</h4>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if kit.deliveryPizzaInKit != false %}
+                <div>
+                    <div>
+                        <h3>{{ kit.deliveryPizzaInKit.pizzaName }}</h3>
+                        <div>{{ kit.deliveryPizzaInKit.pizzaPrice }} руб.</div>
+                        <div>{{ kit.deliveryPizzaInKit.pizzaSize }} см.</div>
+                        <p>{{ kit.deliveryPizzaInKit.pizzaComposition }}</p>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            {% elseif kit.deliveryDrinkInKit != false %}
+                <div>
+                    <div>
+                        <h3>{{ kit.deliveryDrinkInKit.drinkName }}</h3>
+                        <div>{{ kit.deliveryDrinkInKit.drinkPrice }} руб.</div>
+                        <div>{{ kit.deliveryDrinkInKit.drinkVolume }} мл.</div>
+                        <p>{{ kit.deliveryDrinkInKit.drinkComposition }}</p>
+                    </div>
+                </div>
+            {% elseif kit.deliveryRollInKit != false %}
+                <div>
+                    <div>
+                        <h3>{{ kit.deliveryRollInKit.rollName }}</h3>
+                        <div>{{ kit.deliveryRollInKit.rollPrice }} руб.</div>
+                        <div>{{ kit.deliveryRollInKit.rollQuantity }} шт.</div>
+                        <p>{{ kit.deliveryRollInKit.rollComposition }}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% set sessionstr = kit.sessionId %}
+
+        {% endfor %}
+
     </div>
 
-{#    {% for pizza in pizzas %}#}
-{#        <div>#}
-{#            <div>#}
-{#                <h3>{{ pizza.pizzaName }}</h3>#}
-{#                <div>{{ pizza.pizzaPrice }} руб.</div>#}
-{#                <div>{{ pizza.pizzaSize }} см.</div>#}
-{#                <p>{{ pizza.pizzaComposition }}</p>#}
-{#                <a href="{{ path('pizzaAdd', {'id':pizza.id}) }}">Добавить в корзину</a>#}
-{#            </div>#}
-{#        </div>#}
 {#    {% endfor %}#}
 
-    {#    <div class="example-wrapper">#}
-    {#        <h1>Пиццы:</h1>#}
-    {#        <ul>#}
-    {#            {% for pizza in pizzas %}#}
-    {#                <li>{{ pizza.pizzaName }}, {{ pizza.pizzaPrice }}, {{ pizza.pizzaComposition }}</li>#}
-    {#            {% endfor %}#}
-    {#        </ul>#}
-    {#    </div>#}
 {% endblock %}

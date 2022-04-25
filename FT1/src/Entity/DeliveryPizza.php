@@ -114,6 +114,7 @@ class DeliveryPizza
             // set the owning side to null (unless already changed)
             if ($deliveryKit->getDeliveryPizzaInKit() === $this) {
                 $deliveryKit->setDeliveryPizzaInKit(null);
+                $deliveryKit->setSessionId(null);
             }
         }
 

@@ -114,6 +114,7 @@ class DeliveryDrink
             // set the owning side to null (unless already changed)
             if ($deliveryKit->getDeliveryDrinkInKit() === $this) {
                 $deliveryKit->setDeliveryDrinkInKit(null);
+                $deliveryKit->setSessionId(null);
             }
         }
 

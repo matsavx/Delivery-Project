@@ -114,6 +114,7 @@ class DeliveryRoll
             // set the owning side to null (unless already changed)
             if ($deliveryKit->getDeliveryRollInKit() === $this) {
                 $deliveryKit->setDeliveryRollInKit(null);
+                $deliveryKit->setSessionId(null);
             }
         }
 

@@ -1,32 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello!{% endblock %}
+{% block head %}
+
+    {% block title %}Главная{% endblock %}
+
+{% endblock %}
 
 {% block body %}
+
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     </style>
-    <header>
-        <ul>
-            <li {{ app.request.get('_route') == 'pizzaList' ? 'active' }}>
-                <a href="{{ path('pizzaList') }}">Пиццы</a>
-            </li>
-            <li {{ app.request.get('_route') == 'drinkList' ? 'active' }}>
-                <a href="{{ path('drinkList') }}">Напитки</a>
-            </li>
-            <li {{ app.request.get('_route') == 'rollList' ? 'active' }}>
-                <a href="{{ path('rollList') }}">Роллы</a>
-            </li>
-            <li {{ app.request.get('_route') == 'kitList' ? 'active' }}>
-                <a href="{{ path('kitList') }}">Корзина</a>
-            </li>
-        </ul>
-    </header>
-    <div class="example-wrapper">
-        <h1>Hello</h1>
-        <ul>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                <img src="images/food_delivery_bike_icon_179642.png" alt=""/>
+            </a>
+            <ul class="nav nav-pills">
+                <li {{ app.request.get('_route') == 'main_page' ? 'active' }}>
+                    <a href="{{ path('main_page') }}" class="nav-link active bg-dark" aria-current="page">Главная</a>
+                </li>
+                <li {{ app.request.get('_route') == 'pizzaList' ? 'active' }}>
+                    <a href="{{ path('pizzaList') }}" class="nav-link text-dark" aria-current="page">Пиццы</a>
+                </li>
+                <li {{ app.request.get('_route') == 'drinkList' ? 'active' }}>
+                    <a href="{{ path('drinkList') }}" class="nav-link text-dark" aria-current="page">Напитки</a>
+                </li>
+                <li {{ app.request.get('_route') == 'rollList' ? 'active' }}>
+                    <a href="{{ path('rollList') }}" class="nav-link text-dark" aria-current="page">Роллы</a>
+                </li>
+                <li {{ app.request.get('_route') == 'kitList' ? 'active' }}>
+                    <a href="{{ path('kitList') }}" class="nav-link text-dark" aria-current="page">Корзина</a>
+                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li {{ app.request.get('_route') == 'history' ? 'active' }}>
+                    <a href="{{ path('history') }}" class="nav-link text-dark" aria-current="page">Заказы</a>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="col-md-3 text-center">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="text-primary mr-2">{{ user }}</a>
+                <button type="button" class="btn btn-primary"><a class="text-light" href="{{ path('app_logout') }}">Выйти</a></button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-primary me-2"><a href="{{ path('app_login') }}">Войти</a></button>
+                    <button type="button" class="btn btn-primary"><a class="text-light" href="{{ path('app_register') }}">Регистрация</a></button>
+                {% endif %}
+            </div>
+        </header>
+    </div>
 
-        </ul>
+    <div class="container mt-lg-2 align-items-center text-center">
+        <h1>Добро пожаловать!</h1>
     </div>
 {% endblock %}

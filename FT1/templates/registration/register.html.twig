@@ -1,13 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Оформление заказа{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
     <div class="container">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
@@ -35,9 +30,8 @@
                     </li>
                 {% endif %}
             </ul>
-            <div class="col-md-3 text-center">
+            <div class="col-md-3 text-end">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="text-primary mr-2">{{ user }}</a>
                     <button type="button" class="btn btn-primary"><a class="text-light" href="{{ path('app_logout') }}">Выйти</a></button>
                 {% else %}
                     <button type="button" class="btn btn-outline-primary me-2"><a href="{{ path('app_login') }}">Войти</a></button>
@@ -46,12 +40,17 @@
             </div>
         </header>
     </div>
-
     <div class="container m-auto">
-        <h3>Оформление заказа</h3>
-        <hr>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+        <h3>Регистрация</h3>
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.login, {
+                label: 'Логин'
+            })}}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Пароль'
+            }) }}
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+
+        <div class="mt-lg-2">{{ form_end(registrationForm) }}</div>
     </div>
 {% endblock %}
